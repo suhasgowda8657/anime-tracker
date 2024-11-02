@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Anime Website</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to CSS for styling -->
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Anime Tracker</h1>
+    <nav>
+      <a href="home.html">Home</a> |
+      <a href="watched.html">Watched Anime</a> |
+      <a href="to_watch.html">To Be Watched</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="add_anime.html">Add Anime</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Recently Added Anime</h2>
+      <div id="recentAnimeList">
+        <p>Loading anime list...</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Browse Categories</h2>
+      <div class="category-links">
+        <a href="watched.html">Watched Anime</a> |
+        <a href="to_watch.html">To Be Watched</a> |
+        <a href="characters.html">Characters</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Anime Website</p>
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz_-7Cw3mEakO4j6HIqT2AcrFn_FrK7LzrVV8g-z4QZ01A3QXVfaMSmiVagy4BdewCP/exec';
+
+    function loadRecentAnime() {
+      fetch(scriptURL + '?action=getRecentAnime')
+        .then(response => response.json())
+        .then(data => {
+          const recentAnimeList = document.getElementById('recentAnimeList');
+          recentAnimeList.innerHTML = ''; // Clear any loading text
+          if (data.length > 1) { // Check for data (skip header row)
+            data.slice(1, 6).forEach(anime => { // Display only the first 5 entries
+              const animeItem = document.createElement('div');
+              animeItem.className = 'anime-item';
+              animeItem.innerHTML = `
+                <h3>${anime[0]}</h3>
+                <p><strong>Rating:</strong> ${anime[2]}</p>
+                <p><img src="${anime[3]}" alt="${anime[0]} Image" width="100"></p>
+                <p>${anime[1]}</p>
+              `;
+              recentAnimeList.appendChild(animeItem);
+            });
+          } else {
+            recentAnimeList.innerHTML = '<p>No recent anime found.</p>';
+          }
+        })
+        .catch(error => console.error('Error!', error));
+    }
+
+    function logout() {
+      alert("You have logged out.");
+      window.location.href = 'login.html';
+    }
+
+    // Load the recent anime list on page load
+    window.onload = loadRecentAnime;
+  </script>
+</body>
+</html>

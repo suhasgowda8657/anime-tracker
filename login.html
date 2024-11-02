@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Anime Website</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Include a CSS file for styling -->
+</head>
+<body>
+  <header>
+    <h2>Anime Website Login</h2>
+  </header>
+
+  <main>
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required><br><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required><br><br>
+
+      <button type="button" onclick="loginUser()">Login</button>
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+
+    <div id="loginStatus"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Anime Website</p>
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz_-7Cw3mEakO4j6HIqT2AcrFn_FrK7LzrVV8g-z4QZ01A3QXVfaMSmiVagy4BdewCP/exec';
+
+    function loginUser() {
+  const formData = {
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    action: 'login'
+  };
+
+  console.log("Form Data:", formData); // Log form data
+
+  fetch(scriptURL, {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Response Data:", data); // Log response data
+    const loginStatus = document.getElementById('loginStatus');
+    if (data.success) {
+      loginStatus.textContent = 'Login successful! Redirecting...';
+      window.location.href = 'home.html'; // Redirect to homepage after login
+    } else {
+      loginStatus.textContent = 'Login failed. Please check your email and password.';
+    }
+  })
+  .catch(error => console.error('Error!', error));
+}
+
+  </script>
+</body>
+</html>

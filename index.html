@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirect to Login</title>
+</head>
+<body>
+  <script>
+    // Check if the user is logged in (this can be updated with a real check)
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+    // Redirect to login if not logged in
+    if (!isLoggedIn) {
+      window.location.href = 'login.html';
+    } else {
+      window.location.href = 'home.html'; // or the homepage for logged-in users
+    }
+  </script>
+</body>
+</html>

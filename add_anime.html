@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Anime - Anime Website</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to CSS for styling -->
+</head>
+<body>
+  <header>
+    <h1>Add New Anime</h1>
+    <nav>
+      <a href="home.html">Home</a> |
+      <a href="watched.html">Watched Anime</a> |
+      <a href="to_watch.html">To Be Watched</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="add_anime.html">Add Anime</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <form id="animeForm">
+      <label for="name">Anime Name:</label>
+      <input type="text" id="name" required><br><br>
+
+      <label for="description">Description:</label>
+      <textarea id="description" required></textarea><br><br>
+
+      <label for="rating">Rating:</label>
+      <input type="number" id="rating" min="1" max="10" required><br><br>
+
+      <label for="imageUrl">Image URL:</label>
+      <input type="url" id="imageUrl" required><br><br>
+
+      <label for="character">Main Character:</label>
+      <input type="text" id="character" required><br><br>
+
+      <label for="genre">Genre:</label>
+      <select id="genre" required>
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Romance">Romance</option>
+        <!-- Add more genres as needed -->
+      </select><br><br>
+
+      <button type="button" onclick="submitAnime()">Add Anime</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Anime Website</p>
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz_-7Cw3mEakO4j6HIqT2AcrFn_FrK7LzrVV8g-z4QZ01A3QXVfaMSmiVagy4BdewCP/exec';
+
+    function submitAnime() {
+      const formData = {
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        rating: document.getElementById('rating').value,
+        imageUrl: document.getElementById('imageUrl').value,
+        character: document.getElementById('character').value,
+        genre: document.getElementById('genre').value
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.text())
+      .then(text => {
+        alert("Anime added successfully!");
+        document.getElementById('animeForm').reset();
+      })
+      .catch(error => console.error('Error!', error));
+    }
+
+    function logout() {
+      alert("You have logged out.");
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

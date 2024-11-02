@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watched Anime - Anime Website</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to CSS for styling -->
+</head>
+<body>
+  <header>
+    <h1>Watched Anime List</h1>
+    <nav>
+      <a href="home.html">Home</a> |
+      <a href="watched.html">Watched Anime</a> |
+      <a href="to_watch.html">To Be Watched</a> |
+      <a href="characters.html">Characters</a> |
+      <a href="add_anime.html">Add Anime</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Your Watched Anime</h2>
+    <div id="animeList">
+      <p>Loading watched anime...</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Anime Website</p>
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz_-7Cw3mEakO4j6HIqT2AcrFn_FrK7LzrVV8g-z4QZ01A3QXVfaMSmiVagy4BdewCP/exec';
+
+    function loadWatchedAnime() {
+      fetch(scriptURL + '?action=getWatchedAnime')
+        .then(response => response.json())
+        .then(data => {
+          const animeList = document.getElementById('animeList');
+          animeList.innerHTML = ''; // Clear any loading text
+          if (data.length > 1) { // Check for data (skip header row)
+            data.slice(1).forEach(anime => {
+              const animeItem = document.createElement('div');
+              animeItem.className = 'anime-item';
+              animeItem.innerHTML = `
+                <h3>${anime[0]}</h3>
+                <p><strong>Genre:</strong> ${anime[1]}</p>
+                <p><strong>Rating:</strong> ${anime[2]}</p>
+                <p>${anime[3]}</p>
+              `;
+              animeList.appendChild(animeItem);
+            });
+          } else {
+            animeList.innerHTML = '<p>No watched anime found.</p>';
+          }
+        })
+        .catch(error => console.error('Error!', error));
+    }
+
+    function logout() {
+      alert("You have logged out."); // Placeholder for logout functionality
+      window.location.href = 'login.html'; // Redirect to login page
+    }
+
+    // Load the anime list on page load
+    window.onload = loadWatchedAnime;
+  </script>
+</body>
+</html>
